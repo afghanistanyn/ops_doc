@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>阿里云架构说明</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>阿里云架构文档</h1>
+<ul>
+<li>编写: zusie.zhu</li>
+<li>日期: 12/17/2015 10:12:19 PM </li>
+<li>单位: 问途信息技术有限公司</li>
+</ul>
+<hr />
+<p>一、拓扑结构图</p>
+<p><a href="http://image.dossm.com/image/M00/00/3F/CqnSOlZ6WrmAE9u5AACGnSQLwyE002.png" title="topo">dossm@aliyun topo</a>.
+ <img src="http://image.dossm.com/image/M00/00/3F/CqnSOlZ6WrmAE9u5AACGnSQLwyE002.png" /></p>
+<hr />
+<p>1.1 <strong>服务器硬件配置及角色说明</strong></p>
+<p><strong><em>Nginx</em></strong></p>
+<blockquote>
+<p>硬件配置 8cpu+16G+300G+10M</p>
+<p>a.反向代理dossm各子系统(nginx)</p>
+<p>b.为图片服务器提供下载、缓存 (nginx)</p>
+<p>c.配置其作为防火墙(路由)作为整个架构的出入口 (netfilter/iptables)</p>
+</blockquote>
+<p><strong><em>Apache</em></strong></p>
+<blockquote>
+<p>硬件配置 4cpu+16G+500G+6M</p>
+<p>a.	用于为dossm各子系统提供web服务 (Lnmp+php-extensions)</p>
+<p>b.	同步文件至广州机房	(sersync/inotify/sync)</p>
+</blockquote>
+<p><strong><em>Image</em></strong></p>
+<blockquote>
+<p>硬件配置 4cpu+8G+500G</p>
+<p>a.	提供图片存储 (fastdfs+nginx)</p>
+</blockquote>
+<p><strong><em>Compiler</em></strong></p>
+<blockquote>
+<p>硬件配置 8cpu+16G+300G</p>
+<p>a.	提供dossm系统编译生成html静态页面(mongodb/rabbitmq/tomcat)</p>
+<p>b.	图片服务器storage备份</p>
+</blockquote>
+<p><strong><em>Log (本次暂未实施)</em></strong></p>
+<blockquote>
+<p>硬件配置 8cpu+8G+500G
+a.	日志收集分析 （logstash/elasticsearch/kibana/redis）</p>
+<p>b.	监控平台（zabbix/mysql）</p>
+</blockquote>
+<p><strong><em>Mysql</em></strong></p>
+<blockquote>
+<p>硬件配置 4cpu+8G+500G  x 2</p>
+<p>a.	数据库主从(mysql5.6)</p>
+</blockquote>
+<hr />
+<p>1.2 <strong>服务器网络环境</strong></p>
+<pre><code>compiler    10.169.201.92 (内网)
+image       10.169.210.58 (内网)
+mysql       10.169.121.78 (内网)
+apache      120.25.101.238 (公网)  10.170.113.232 (内网)
+nginx       120.25.107.18 (公网)   10.170.117.75 (内网)
+</code></pre>
+
+<hr />
+<p>1.3 <strong>关于无外网ip的服务器访问外部网络</strong></p>
+<p>内网服务器除nginx和apache外均无外网，使用pptp拨号加SNAT访问外网</p>
+<pre><code>#inner server dail
+pptpsetup --create vpn --server 10.170.117.75 --username image --password password --encrypt --start
+pppd call vpn
+route add -net 0.0.0.0 dev ppp0
+
+#for apache
+#route add -net 192.168.10.0/24 dev ppp0
+
+#nginx
+sysctl -p net.ipv4.ip_forward = 1
+iptables -t nat -A POSTROUTING -o eth1 -m iprange --src-range 192.168.10.100-192.168.10.103 -j MASQUERADE   
+</code></pre>
+
+<hr />
+<p>1.4 <strong>从外部管理服务器</strong></p>
+<p>由于网络环境特殊，提供一下几种方法管理服务器</p>
+<p>1.4.1 服务器pptp拨号固定ip,客户端拨号后使用指定ip连接服务器</p>
+<pre><code>    nginx                          192.168.10.1
+    compiler                       192.168.10.100
+    image                          192.168.10.101
+    apache                         192.168.10.102
+    mysql                          192.168.10.103
+</code></pre>
+
+<p>1.4.2 iptables DNAT开放端口</p>
+<pre><code>    #open port 15672 for wintour office
+    iptables -A FORWARD -s 113.99.0.0/16 -i eth1 -p tcp -m tcp --dport 15672 -j ACCEPT
+    iptables -t nat -A PREROUTING -d 120.25.107.18/32 -p tcp -m tcp --dport 15672 -j DNAT --to-destination 10.169.201.92:15672
+    iptables -t nat -A POSTROUTING -d 10.169.201.92/32 -p tcp -m tcp --dport 15672 -j SNAT --to-source 10.170.117.75
+</code></pre>
+
+<p>1.4.3 服务器ssh端口表</p>
+<pre><code>    nginx                           22
+    compiler                       222
+    image                          223
+    mysql                          224
+    apache                         225
+</code></pre>
+
+<hr />
+<h2>二、应用服务器安装</h2>
+<p>各应用除图片服务器外均使用svn://192.168.0.15/ops_doc/lnmp/ 一键安装部署，相应版本信息到目录下脚本中查看</p>
+<p>2.1 <strong>对lnmp下各文件夹的简单说明</strong></p>
+<pre><code>code     存放dossm系统代码用于自动部署
+conf     存放各应用通用配置文件
+init     存放大部分应用的自启动文件
+script   存放一键安装脚本
+src      存放安装需要的源码包或者二进制包
+</code></pre>
+
+<p>2.2 <strong>使用方法</strong></p>
+<ul>
+<li>打开start.sh文件,根据服务器所安装应用选择取消相应注释来开启该功能,运行修改好的文件即可。</li>
+<li>支持的功能如下</li>
+</ul>
+<pre>
+<code>
+#install_linux_dev
+#install_apache2
+#configure_apache2
+#install_php_dependence
+#install_php56
+#deploy_code
+#install_mongo
+#install_squid
+#install_nginx194
+#python ./check_php_extension.py
+#install_erlang
+#install_rabbitmq35
+#install_mongod265
+#install_jdk17
+#install_tomcat7
+#install_jemalloc
+#install_mysql526
+</pre>
+<p></code></p>
+<p>2.3 <strong>图片服务搭建</strong></p>
+<p>图片服务器由fastdfs和nginx构成,fastdfs提供存储以及各种操作接口,nginx提供图片的web访问接口。</p>
+<ul>
+<li>安装fastdfs</li>
+</ul>
+<pre>
+<code>
+mkdir -p /home/soft
+cd /home/soft
+git clone https://github.com/happyfish100/libfastcommon.git /home/soft/libfastcommon
+cd /home/soft/libfastcommon
+./make.sh && make.sh install
+cd /home/soft
+git clone https://github.com/happyfish100/fastdfs /home/soft/fastdfs
+cd /home/soft/fastdfs
+./make.sh && make.sh install
+</code>
+</pre>
+<ul>
+<li>配置fastdfs</li>
+</ul>
+<pre>
+<code>
+#tracker服务关键配置如下
+# egrep -v '^$|^.?+#' /etc/fdfs/tracker.conf
+disabled=false
+bind_addr=10.169.210.58
+port=22122
+base_path=/home/fastdfs
+store_group=image
+</code>
+</pre>
+<pre>
+<code>
+#storage服务关键配置如下
+# egrep -v '^$|^.?+#' /etc/fdfs/storage.conf
+disabled=false
+group_name=image
+bind_addr=10.169.210.58
+client_bind=true
+port=23000
+base_path=/home/fastdfs
+store_path0=/home/fastdfs
+subdir_count_per_path=256
+tracker_server=10.169.210.58:22122
+</code>
+</pre>
+<ul>
+<li>运行fastdfs</li>
+</ul>
+<pre>
+<code>
+#fdfs_storaged
+iptables -A INPUT -p tcp --dport 23000 -j ACCEPT
+#fdfs_trackerd
+iptables -A INPUT -p tcp --dport 22122 -j ACCEPT
+
+chkconfig fdfs_trackerd on
+/etc/init.d/fdfs_trackerd start
+
+chkconfig fdfs_storaged on
+/etc/init.d/fdfs_storaged start
+</code>
+</pre>
+<ul>
+<li>为nginx安装fastdfs扩展</li>
+</ul>
+<blockquote>
+<p>下载扩展，修改头文件库文件路径</p>
+</blockquote>
+<pre>
+<code>
+cd /home/soft/
+git clone https://github.com/happyfish100/fastdfs-nginx-module
+vim fastdfs-nginx-module/src/config
+CORE_INCS="$CORE_INCS /usr/include/fastdfs /usr/include/fastcommon/"
+
+</pre>
+<p></code></p>
+<blockquote>
+<p>使用脚本安装nginx,修改脚本添加fastdfs扩展的编译</p>
+</blockquote>
+<pre>
+<code>
+./configure --user=www --group=www --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_ssl_module --with-http_spdy_module --with-http_gzip_static_module --with-ipv6 --with-http_sub_module --with-ld-opt="-ljemalloc" --add-module=/home/soft/fastdfs-nginx-module/src/
+</pre>
+<p></code></p>
+<blockquote>
+<p>Nginx config for fastdfs_extension</p>
+</blockquote>
+<pre>
+<code>
+ln -s /home/fastdfs/data /home/fastdfs/data/M00
+
+/usr/local/nginx/conf/nginx.conf
+        location /image/M00 {
+                alias /home/fastdfs/data;
+                ngx_fastdfs_module;
+        }
+
+</pre>
+<p></code></p>
+<blockquote>
+<p>fastdfs_nginx_module配置文件</p>
+</blockquote>
+<pre>
+<code>
+# egrep -v '^$|^.?+#' /etc/fdfs/mod_fastdfs.conf
+base_path=/home/fastdfs
+load_fdfs_parameters_from_tracker=true
+tracker_server=10.169.210.58:22122
+storage_server_port=23000
+group_name=image
+url_have_group_name = true
+store_path_count=1
+store_path0=/home/fastdfs
+http.need_find_content_type=true
+group_count = 0
+</pre>
+<p></code></p>
+<blockquote>
+<p>图片服务的反向代理以及缓存配置</p>
+</blockquote>
+<pre>
+<code>
+vim /usr/local/nginx/conf/vhost/image.conf
+upstream image
+{
+        server 10.169.210.58;
+}
+
+proxy_cache_path /home/www/cache/image_cache levels=1:2 keys_zone=image_cache:512m max_size=1g;
+
+server {
+        listen 80;
+        server_name image.dossm.com;
+        root html/image/;
+
+        access_log /home/www/logs/image.dossm.com_access.log;
+
+        location /image/M00 {
+                proxy_pass http://image;
+                proxy_set_header Host   $host;
+                proxy_set_header X-Real-IP $remote_addr;
+
+                proxy_cache image_cache;
+                proxy_cache_valid 200 302 60m;
+                proxy_cache_valid 404     1m;
+
+         }
+｝
+
+</pre>
+<p></code></p>
+<ul>
+<li>为php安装fastdfs扩展（apache服务器）</li>
+</ul>
+<pre>
+<code>
+	1.安装libfastcommon，同上
+	2.安装fastdfs，并删除安装的二进制文件（/usr/bin/fdfs_*）
+	3.安装fastdfs扩展
+
+	cd php_client/
+	/usr/local/php/bin/phpize
+	./configure --with-php-config=/usr/local/php/bin/php-config
+	make
+	make install
+	
+	4.配置php的fastdfs扩展
+	cat >> /usr/local/php/etc/php.ini << EOF
+	extension = fastdfs_client.so
+	fastdfs_client.base_path = /tmp
+	fastdfs_client.connect_timeout = 2
+	fastdfs_client.network_timeout = 60
+	fastdfs_client.log_level = info
+	fastdfs_client.log_filename = 
+	fastdfs_client.http.anti_steal_secret_key = 
+	fastdfs_client.tracker_group_count = 1
+	fastdfs_client.tracker_group = /etc/fdfs/client.conf
+	fastdfs_client.use_connection_pool = true
+	fastdfs_client.connection_pool_max_idle_time = 3600
+	EOF
+
+	mkdir -p /home/fastdfs-client/logs
+
+	mkdir -p /etc/fdfs/
+	cat > /etc/fdfs/client.conf << EOF
+	connect_timeout=30
+	network_timeout=60
+	base_path=/home/fastdfs-client/logs
+	tracker_server=120.25.13.49:22122
+	log_level=info
+	use_connection_pool = false
+	connection_pool_max_idle_time = 3600
+	load_fdfs_parameters_from_tracker=false
+	use_storage_id = false
+	storage_ids_filename = storage_ids.conf
+	EOF
+	
+	5.check
+	php -i|grep fastdfs_client
+
+</code>
+</pre>
+<p>2.4 <strong>同步服务搭建</strong></p>
+<p>同步服务器采用lsyncd（wintour_apache）+rsync架构，阿里云安装lsyncd服务负责监控web目录编译产生的文件并向广州机房发起同步，广州机房安装rsync服务负责接收阿里云推送过来的文件。</p>
+<ul>
+<li>rsync安装配置</li>
+</ul>
+<pre>
+<code>
+yum -y install rsync xinetd
+
+#vim /etc/xinetd.d/rsync 
+service rsync
+{
+        disable = no
+        socket_type     = stream
+        wait            = no
+        user            = root
+        server          = /usr/bin/rsync
+        server_args     = --daemon
+        log_on_failure  += USERID
+}
+</code>
+</pre>
+<pre>
+<code>
+#vim /etc/rsyncd.conf
+pid file = /var/run/rsyncd.pid   
+port = 873
+uid = root   
+gid = root   
+use chroot = yes 
+read only = no 
+hosts allow=120.25.101.238/255.255.255.0
+hosts deny=*
+max connections = 8
+motd file = /etc/rsyncd/rsyncd.motd
+log file = /var/log/rsync.log
+log format = %t %a %m %f %b
+timeout = 300
+
+[aliyun_rsync]
+path = /home/wintour_web/   
+list=no
+ignore errors = yes
+auth users = root
+secrets file = /etc/rsyncd/rsync.wd
+comment = aliyun_rsync
+exclude =   group/ cdn/
+</code>
+</pre>
+<pre>
+<code>
+vim /etc/rsyncd/rsync.wd
+root:password
+
+chmod 600 /etc/rsyncd/rsync.wd
+
+#open port 873
+iptables -A INPUT -p tcp --dport 873 -j ACCEPT
+iptables -A INPUT -p udp --dport 873 -j ACCEPT
+
+chkconfig xinetd on
+service xinetd start
+
+#check rsyncd is running
+netstat -ntpl|grep 873
+
+#check rsyncd log
+tail -f /var/log/rsync.log
+</code>
+</pre>
+<ul>
+<li>lsyncd安装配置</li>
+</ul>
+<p>lsyncd采用内核inotify机制监控指定文件夹下发生变更/新增的文件，并将其使用rsync同步到指定的地方</p>
+<p>注意：inotify不支持监控nfs目录</p>
+<pre>
+<code>
+yum -y install lsyncd
+
+#vim /etc/lsyncd.conf
+-- delete        =       true    Default. Lsyncd will delete on the target whatever is not in the source. At startup and what's being deleted during normal operation.
+-- delete        =       false   Lsyncd will not delete any files on the target. Not on startup nor on normal operation. (Overwrites are possible though)
+-- delete        =       'startup'       Lsyncd will delete files on the target when it starts up but not on normal operation.
+-- delete        =       'running'       Lsyncd will not delete files on the target when it starts up but will delete those that are removed during normal operation.
+
+-- delay = 15, (default)
+-- init = true, (exec startup actions,by default)
+-- init = false, (do not exec startup actions,for protect files been delete by option --delete)
+
+settings {
+        logfile = "/var/log/lsyncd.log",
+        statusFile = "/var/log/lsyncd.status",
+        -- inotifyMode = "CloseWrite or Modify",
+        inotifyMode = "CloseWrite",
+        maxProcesses = 8,
+        nodaemon = false,
+}
+
+sync {
+        default.rsync,
+        source = "/home/wintour_web/",
+        target = "root@124.172.221.193::aliyun_rsync",
+        delete = "running",
+        excludeFrom = "/etc/lsyncd.exclude",
+        -- init = false,
+        delay = 5,
+        delay = 60,
+        rsync = {
+                binary = "/usr/bin/rsync",
+                archive = true,
+                compress = true,
+                perms = true,
+                verbose = true,
+                password_file = "/usr/local/sersync/rsync.pass",
+                _extra = {"--protocol=29"}
+        }
+}
+
+sync {
+        default.rsync,
+        source = "/home/btg_web/",
+        target = "btg@58.83.157.118::btg_aliyun",
+        -- init = false ,
+        delete = "running",
+        -- delete = "startup",
+        excludeFrom = "/etc/lsyncd.exclude",
+        delay = 5,
+        rsync = {
+                binary = "/usr/bin/rsync",
+                archive = true,
+                compress = true,
+                perms = true,
+                password_file = "/etc/btg_rsync.passwd",
+                _extra = {"--protocol=29"}
+
+        }
+}
+
+#lsyncd autostart
+
+chkconfig lsyncd on
+/etc/init.d/lsyncd start
+
+</code>
+</pre>
+<ul>
+<li>手动同步脚本</li>
+</ul>
+<pre>
+<code>
+vim /home/ops_script/rsync_to_gz.sh
+#!/bin/bash
+rsync -artu --progress --exclude=group/ --exclude=cdn/ /home/wintour_web/ root@124.172.221.193::aliyun_rsync --password-file=/usr/local/sersync/rsync.pass
+
+vim /home/ops_script/rsync_to_btg.sh
+#!/bin/bash
+rsync -artu --progress --exclude-from="/etc/lsyncd.exclude" /home/btg_web/ btg@58.83.157.118::btg_aliyun --password-file=/etc/btg_rsync.passwd
+
+</code>
+</pre>
+<hr />
+<h2>三、安全策略</h2>
+<ul>
+<li>主机安全</li>
+</ul>
+<pre>
+<code>
+
+	密码策略:每月15日变更一次密码，密码为随机生成，长度不低于10位
+	cat /dev/urandom | tr -dc "a-zA-Z0-9_+\~\!\@\#\$\%\^\&\*\(\)"| fold -w 10 |head -n 1
+
+	关键文件权限
+	chattr +i /etc/passwd 
+	chattr +i /etc/shadow
+	chattr +i /usr/local/nginx/conf/nginx.conf
+	chattr +a /usr/local/apache/conf/extra/ httpd-vhosts.conf
+	chattr +a /usr/local/squid/etc/squid.conf
+
+	logwatch：每日安全狗日志
+	/home/logwatch/daily.report
+
+	fail2ban:自动封ssh扫描或登录尝试
+
+	nginx/squid访问日志分析（暂无）
+	
+</code>
+</pre>
+<ul>
+<li>网络安全</li>
+</ul>
+<pre>
+<code>
+iptables防火墙设置，默认策略为拒绝，对外部访问只开启web，ssh ，pptp；对office网络开启mongo，rabbit，tomcat端口以便调试
+
+vim /etc/sysconfig/iptables
+
+*filter
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT ACCEPT [0:0]
+-A INPUT -i lo -j ACCEPT
+-A INPUT -i ppp+ -j ACCEPT
+-A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 21 -j ACCEPT
+-A INPUT -p gre -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 221 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 1723 -j ACCEPT
+-A INPUT -s 113.99.0.0/16 -i eth1 -p tcp -m tcp --dport 7090 -j ACCEPT
+-A INPUT -s 192.168.10.0/24 -j ACCEPT
+-A INPUT -d 192.168.10.0/24 -j ACCEPT
+-A INPUT -s 183.6.167.250/32 -j ACCEPT
+-A INPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT
+COMMIT
+-A FORWARD -p tcp -m tcp --dport 22 -j ACCEPT
+-A FORWARD -s 113.99.0.0/16 -i eth1 -p tcp -m tcp --dport 7080 -j ACCEPT 
+-A FORWARD -s 113.99.0.0/16 -i eth1 -p tcp -m tcp --dport 27017 -j ACCEPT 
+-A FORWARD -s 113.99.0.0/16 -i eth1 -p tcp -m tcp --dport 15672 -j ACCEPT
+-A FORWARD -s 192.168.10.0/24 -j ACCEPT
+-A FORWARD -s 10.169.201.92/32 -j ACCEPT
+-A FORWARD -s 10.169.210.58/32 -j ACCEPT
+-A FORWARD -s 10.169.121.78/32 -j ACCEPT
+-A FORWARD -s 10.170.113.232/32 -j ACCEPT
+-A FORWARD -d 192.168.10.0/24 -j ACCEPT
+COMMIT
+*nat
+:PREROUTING ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+:OUTPUT ACCEPT [31331:1968813]
+-A PREROUTING -d 120.25.107.18/32 -p tcp -m tcp --dport 222 -j DNAT --to-destination 10.169.201.92:22
+-A PREROUTING -d 120.25.107.18/32 -p tcp -m tcp --dport 223 -j DNAT --to-destination 10.169.210.58:22
+-A PREROUTING -d 120.25.107.18/32 -p tcp -m tcp --dport 224 -j DNAT --to-destination 10.169.121.78:22
+-A PREROUTING -d 120.25.107.18/32 -p tcp -m tcp --dport 225 -j DNAT --to-destination 10.170.113.232:22
+-A PREROUTING -d 120.25.107.18/32 -p tcp -m tcp --dport 7080 -j DNAT --to-destination 10.169.201.92:7080 
+-A PREROUTING -d 120.25.107.18/32 -p tcp -m tcp --dport 27017 -j DNAT --to-destination 10.169.201.92:27017 
+-A PREROUTING -d 120.25.107.18/32 -p tcp -m tcp --dport 15672 -j DNAT --to-destination 10.169.201.92:15672
+-A PREROUTING -d 120.25.107.18/32 -p tcp -m tcp --dport 3306 -j DNAT --to-destination 10.169.121.78:3306 
+-A POSTROUTING -d 10.169.201.92/32 -p tcp -m tcp --dport 22 -j SNAT --to-source 10.170.117.75
+-A POSTROUTING -d 10.169.210.58/32 -p tcp -m tcp --dport 22 -j SNAT --to-source 10.170.117.75
+-A POSTROUTING -d 10.169.121.78/32 -p tcp -m tcp --dport 22 -j SNAT --to-source 10.170.117.75
+-A POSTROUTING -d 10.170.113.232/32 -p tcp -m tcp --dport 22 -j SNAT --to-source 10.170.117.75
+-A POSTROUTING -d 10.169.201.92/32 -p tcp -m tcp --dport 7080 -j SNAT --to-source 10.170.117.75 
+-A POSTROUTING -d 10.169.201.92/32 -p tcp -m tcp --dport 27017 -j SNAT --to-source 10.170.117.75 
+-A POSTROUTING -d 10.169.201.92/32 -p tcp -m tcp --dport 15672 -j SNAT --to-source 10.170.117.75
+-A POSTROUTING -d 10.169.121.78/32 -p tcp -m tcp --dport 3306 -j SNAT --to-source 10.170.117.75 
+-A POSTROUTING -o eth1 -m iprange --src-range 192.168.10.100-192.168.10.103 -j MASQUERADE
+COMMIT
+
+
+</code>
+</pre>
+<ul>
+<li><strong>阿里提供的安全能力 -- 云盾(部分免费)</strong></li>
+</ul>
+<hr />
+<h2>四、备份策略</h2>
+<ul>
+<li><strong>数据库</strong></li>
+</ul>
+<blockquote>
+<ol>
+<li>每天4点备份昨日数据，每周日将备份传回公司保存</li>
+<li>编辑数据库之前本机备份</li>
+</ol>
+</blockquote>
+<ul>
+<li><strong>网页文件</strong></li>
+</ul>
+<blockquote>
+<ol>
+<li>每月1日一次全备，之后增量备份,月底将备份传回公司保存</li>
+</ol>
+</blockquote>
+<ul>
+<li><strong>服务配置文件</strong></li>
+</ul>
+<blockquote>
+<ol>
+<li>脚本自动1分钟备份一次关键配置文件（squid.conf ,httpd-vhosts.conf）</li>
+<li>每次变更之前本机备份</li>
+</ol>
+</blockquote>
+<hr />
+<h2>五、后期维护与注意事项</h2>
+<ul>
+<li>大量日志清理</li>
+</ul>
+<pre>
+<code>
+	nignx: /home/www/logs/* 
+	web1： /usr/local/squid/var/logs/*
+</pre>
+<p></code></p>
+<ul>
+<li>重启服务器需要确保启动的进程(均已设置自启动)</li>
+</ul>
+<pre>
+<code>
+	web1: 	apache,squid,sshd
+	web2: 	apache,sshd
+	mysql:  mysqld,sshd,pppd
+	apache: apache,lsyncd,crond,radiusd,sshd
+	image:  fdfs_trackerd,fdfs_storaged,nginx,sshd
+	nginx:  iptables,nginx,tomcat,pptpd,fail2ban,crond,sshd
+	compile: mongod,rabbitmq,tomcat,sshd
+</code>
+</pre>
+<hr />
+<h2>六、监控报警</h2>
+<ul>
+<li>关键进程监控报警脚本</li>
+</ul>
+<pre>
+	***示例脚本***
+
+	#!/bin/sh
+
+	sersync="/usr/local/sersync/sersync2"
+	confxml="/usr/local/sersync/confxml.xml"
+	
+	status=$(ps aux|grep 'sersync2'|grep -v 'grep'|wc -l)
+	if [ $status -eq 0 ];
+	then
+	        $sersync -d -n 4 -o /usr/local/sersync/confxml.xml
+	else
+	        exit 0;
+	fi
+</pre>
+<ul>
+<li>
+<p>zabbix自动监控与重启进程(暂无)</p>
+</li>
+<li>
+<p>阿里云监控</p>
+</li>
+</ul>
+<p>http://cms.console.aliyun.com/#/cloud/ecs/cn-shenzhen</p>
+<hr />
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
